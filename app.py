@@ -134,7 +134,7 @@ with app.app_context():
     db.create_all()
     if not User.query.filter_by(username='admin').first():
         admin_user = User(username='admin')
-        admin_user.set_password('admin123')
+        admin_user.set_password('admin')
         db.session.add(admin_user)
         db.session.commit()
 
