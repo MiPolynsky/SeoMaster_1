@@ -2,7 +2,7 @@ from flask_admin import Admin, AdminIndexView, expose
 from flask_admin.contrib.sqla import ModelView
 from flask_login import current_user, LoginManager
 from flask import redirect, url_for, flash
-from models import User, PageMetadata
+from models import User, PageMetadata, Feedback
 from app import app, db
 
 login_manager = LoginManager()
@@ -20,6 +20,16 @@ class SecureModelView(ModelView):
     def inaccessible_callback(self, name, **kwargs):
         return redirect(url_for('login'))
 
+class FeedbackModelView(SecureModelView):
+    column_list = ['name', 'email', 'subject', 'status', 'created_at']
+    column_searchable_list = ['name', 'email', 'subject', 'message']
+    column_filters = ['status', 'created_at']
+    form_excluded_columns = ['created_at']
+    can_create = False
+    can_delete = True
+    can_edit = True
+    column_default_sort = ('created_at', True)
+
 class SecureAdminIndexView(AdminIndexView):
     def is_accessible(self):
         return current_user.is_authenticated
@@ -35,3 +45,4 @@ class SecureAdminIndexView(AdminIndexView):
 
 admin = Admin(app, name='SEO Admin', template_mode='bootstrap3', index_view=SecureAdminIndexView())
 admin.add_view(SecureModelView(PageMetadata, db.session))
+admin.add_view(FeedbackModelView(Feedback, db.session))

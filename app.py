@@ -20,7 +20,7 @@ app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {
 
 db.init_app(app)
 
-from models import User, PageMetadata
+from models import User, PageMetadata, Feedback
 import admin
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -111,8 +111,35 @@ def services():
     ]
     return render_template('services.html', services=all_services, metadata=metadata)
 
-@app.route('/contact')
+@app.route('/contact', methods=['GET', 'POST'])
 def contact():
+    if request.method == 'POST':
+        name = request.form.get('name')
+        email = request.form.get('email')
+        subject = request.form.get('subject')
+        message = request.form.get('message')
+
+        if not all([name, email, subject, message]):
+            flash('Пожалуйста, заполните все поля формы', 'error')
+            return redirect(url_for('contact'))
+
+        feedback = Feedback(
+            name=name,
+            email=email,
+            subject=subject,
+            message=message
+        )
+
+        try:
+            db.session.add(feedback)
+            db.session.commit()
+            flash('Спасибо за ваше сообщение! Мы свяжемся с вами в ближайшее время.', 'success')
+            return redirect(url_for('contact'))
+        except Exception as e:
+            db.session.rollback()
+            flash('Произошла ошибка при отправке сообщения. Пожалуйста, попробуйте позже.', 'error')
+            return redirect(url_for('contact'))
+
     return render_template('contact.html')
 
 @app.route('/service/audit')
