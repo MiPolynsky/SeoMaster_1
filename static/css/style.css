@@ -35,7 +35,14 @@ body {
     box-shadow: 0 5px 15px rgba(0,0,0,0.1);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     height: 100%;
+    cursor: pointer; /* Added from edited snippet */
 }
+
+.service-card a { /* Added from edited snippet */
+    text-decoration: none;
+    color: inherit;
+}
+
 
 .service-card:hover {
     transform: translateY(-10px);
@@ -102,4 +109,39 @@ body {
     .hero-section img {
         margin-top: 2rem;
     }
+}
+
+/* Added from edited snippet */
+.service-page {
+    background-color: var(--bg-color);
+    min-height: 80vh;
+}
+
+.service-content {
+    background: var(--card-bg);
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.service-features {
+    list-style: none;
+    padding: 0;
+}
+
+.service-features li {
+    margin-bottom: 1rem;
+    padding: 1rem;
+    background: rgba(52, 152, 219, 0.1);
+    border-radius: 8px;
+    transition: transform 0.3s ease;
+}
+
+.service-features li:hover {
+    transform: translateX(10px);
+}
+
+.service-features i {
+    color: var(--secondary-color);
+    margin-right: 10px;
 }
