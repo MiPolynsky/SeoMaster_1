@@ -1,36 +1,67 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, redirect, url_for, flash
+from flask_sqlalchemy import SQLAlchemy
+from flask_login import login_user, logout_user, login_required, current_user
+from werkzeug.security import generate_password_hash
+import os
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = os.environ.get('FLASK_SECRET_KEY', 'your-secret-key-here')
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///app.db')
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+db = SQLAlchemy(app)
+
+from models import User, PageMetadata
+import admin
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form.get('username')
+        password = request.form.get('password')
+        user = User.query.filter_by(username=username).first()
+        if user and user.check_password(password):
+            login_user(user)
+            flash('Успешный вход в систему!', 'success')
+            return redirect(url_for('admin.index'))
+        flash('Неверное имя пользователя или пароль', 'error')
+    return render_template('login.html')
+
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    flash('Вы вышли из системы', 'info')
+    return redirect(url_for('index'))
 
 @app.route('/')
 def index():
+    metadata = PageMetadata.query.filter_by(url_path='/').first()
     services = [
         {
             'title': 'Аудит сайта',
             'description': 'Комплексный анализ вашего сайта для выявления технических ошибок и потенциала роста',
-            'image': 'https://images.unsplash.com/photo-1542744173-05336fcc7ad4',
             'icon': 'fa-magnifying-glass-chart',
             'url': '/service/audit'
         },
         {
             'title': 'Семантическое ядро',
             'description': 'Подбор ключевых слов и фраз для эффективного продвижения вашего сайта',
-            'image': 'https://images.unsplash.com/photo-1460925895917-afdab827c52f',
             'icon': 'fa-sitemap',
             'url': '/service/semantic'
         },
         {
             'title': 'Копирайтинг',
             'description': 'Создание уникального контента, оптимизированного под поисковые системы',
-            'image': 'https://images.unsplash.com/photo-1488190211105-8b0e65b80b4e',
             'icon': 'fa-pen-fancy',
             'url': '/service/copywriting'
         }
     ]
-    return render_template('index.html', services=services)
+    return render_template('index.html', services=services, metadata=metadata)
 
 @app.route('/services')
 def services():
+    metadata = PageMetadata.query.filter_by(url_path='/services').first()
     all_services = [
         {
             'title': 'Аудит сайта',
@@ -69,13 +100,12 @@ def services():
             'url': '/service/landing'
         }
     ]
-    return render_template('services.html', services=all_services)
+    return render_template('services.html', services=all_services, metadata=metadata)
 
 @app.route('/contact')
 def contact():
     return render_template('contact.html')
 
-# Маршруты для отдельных услуг
 @app.route('/service/audit')
 def service_audit():
     return render_template('service_audit.html')
@@ -99,3 +129,14 @@ def service_business():
 @app.route('/service/landing')
 def service_landing():
     return render_template('service_landing.html')
+
+with app.app_context():
+    db.create_all()
+    if not User.query.filter_by(username='admin').first():
+        admin_user = User(username='admin')
+        admin_user.set_password('admin123')
+        db.session.add(admin_user)
+        db.session.commit()
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000, debug=True)
