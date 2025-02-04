@@ -1,0 +1,37 @@
+from flask_admin import Admin, AdminIndexView, expose
+from flask_admin.contrib.sqla import ModelView
+from flask_login import current_user, LoginManager
+from flask import redirect, url_for, flash
+from models import User, PageMetadata
+from app import app, db
+
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = 'login'
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
+
+class SecureModelView(ModelView):
+    def is_accessible(self):
+        return current_user.is_authenticated
+
+    def inaccessible_callback(self, name, **kwargs):
+        return redirect(url_for('login'))
+
+class SecureAdminIndexView(AdminIndexView):
+    def is_accessible(self):
+        return current_user.is_authenticated
+
+    def inaccessible_callback(self, name, **kwargs):
+        return redirect(url_for('login'))
+
+    @expose('/')
+    def index(self):
+        if not current_user.is_authenticated:
+            return redirect(url_for('login'))
+        return super(SecureAdminIndexView, self).index()
+
+admin = Admin(app, name='SEO Admin', template_mode='bootstrap3', index_view=SecureAdminIndexView())
+admin.add_view(SecureModelView(PageMetadata, db.session))
