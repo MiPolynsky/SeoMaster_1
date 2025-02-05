@@ -35,10 +35,10 @@ body {
     box-shadow: 0 5px 15px rgba(0,0,0,0.1);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     height: 100%;
-    cursor: pointer; /* Added from edited snippet */
+    cursor: pointer;
 }
 
-.service-card a { /* Added from edited snippet */
+.service-card a {
     text-decoration: none;
     color: inherit;
 }
@@ -111,7 +111,43 @@ body {
     }
 }
 
-/* Added from edited snippet */
+/* Добавляем стили для формы в hero-section */
+.hero-section .card {
+    background: rgba(255, 255, 255, 0.95);
+    border: none;
+    border-radius: 15px;
+}
+
+.hero-section .card-body {
+    padding: 2rem;
+}
+
+.hero-section .form-label {
+    font-weight: 500;
+}
+
+.hero-section .form-control {
+    border: 1px solid rgba(44, 62, 80, 0.2);
+    padding: 0.8rem;
+    font-size: 0.95rem;
+}
+
+.hero-section .form-control:focus {
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
+}
+
+.hero-section textarea.form-control {
+    resize: none;
+}
+
+.hero-section .btn-primary {
+    padding: 0.8rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
 .service-page {
     background-color: var(--bg-color);
     min-height: 80vh;
