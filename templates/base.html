@@ -54,6 +54,22 @@
         </div>
     </nav>
 
+    {% if request.path != '/' %}
+    <div class="container py-2">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-0" style="font-size: 0.9em;">
+                <li class="breadcrumb-item"><a href="/" class="text-decoration-none">Главная</a></li>
+                {% if '/service/' in request.path %}
+                    <li class="breadcrumb-item"><a href="/services" class="text-decoration-none">Услуги</a></li>
+                    <li class="breadcrumb-item active">{{ metadata.h1 if metadata else self.title() }}</li>
+                {% else %}
+                    <li class="breadcrumb-item active">{{ metadata.h1 if metadata else self.title() }}</li>
+                {% endif %}
+            </ol>
+        </nav>
+    </div>
+    {% endif %}
+
     {% block content %}{% endblock %}
 
     <footer class="footer mt-5">
