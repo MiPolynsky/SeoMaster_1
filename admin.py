@@ -25,6 +25,23 @@ class PageMetadataView(SecureModelView):
     form_columns = ['url_path', 'title', 'description', 'h1']
     column_searchable_list = ['url_path', 'title']
     column_filters = ['created_at', 'updated_at']
+
+    # Define form widget rendering
+    form_widget_args = {
+        'url_path': {
+            'class': 'form-control'
+        },
+        'title': {
+            'class': 'form-control'
+        },
+        'description': {
+            'class': 'form-control'
+        },
+        'h1': {
+            'class': 'form-control'
+        }
+    }
+
     can_create = True
     can_edit = True
     can_delete = True
@@ -39,6 +56,27 @@ class FeedbackModelView(SecureModelView):
     column_searchable_list = ['name', 'email', 'subject', 'message']
     column_filters = ['status', 'created_at']
     form_excluded_columns = ['created_at']
+
+    # Define form widget rendering
+    form_widget_args = {
+        'name': {
+            'class': 'form-control'
+        },
+        'email': {
+            'class': 'form-control'
+        },
+        'subject': {
+            'class': 'form-control'
+        },
+        'message': {
+            'class': 'form-control',
+            'rows': 5
+        },
+        'status': {
+            'class': 'form-control'
+        }
+    }
+
     can_create = False
     can_delete = True
     can_edit = True
