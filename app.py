@@ -194,17 +194,17 @@ def contact():
     if request.method == 'POST':
         name = request.form.get('name')
         email = request.form.get('email')
-        subject = request.form.get('subject')
+        phone = request.form.get('phone')
         message = request.form.get('message')
 
-        if not all([name, email, subject, message]):
+        if not all([name, email, phone, message]):
             flash('Пожалуйста, заполните все поля формы', 'error')
             return redirect(url_for('contact'))
 
         feedback = Feedback(
             name=name,
             email=email,
-            subject=subject,
+            phone=phone,
             message=message
         )
 

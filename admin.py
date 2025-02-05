@@ -36,8 +36,8 @@ class PageMetadataView(SecureModelView):
         model.updated_at = db.func.now()
 
 class FeedbackModelView(SecureModelView):
-    column_list = ['name', 'email', 'subject', 'status', 'created_at']
-    column_searchable_list = ['name', 'email', 'subject', 'message']
+    column_list = ['name', 'email', 'phone', 'status', 'created_at']
+    column_searchable_list = ['name', 'email', 'phone', 'message']
     column_filters = ['status', 'created_at']
     form_excluded_columns = ['created_at']
 
@@ -48,7 +48,7 @@ class FeedbackModelView(SecureModelView):
         form_class = super(FeedbackModelView, self).scaffold_form()
         form_class.name = StringField('Имя', validators=[DataRequired()])
         form_class.email = StringField('Email', validators=[DataRequired()])
-        form_class.subject = StringField('Тема', validators=[DataRequired()])
+        form_class.phone = StringField('Номер телефона', validators=[DataRequired()])
         form_class.message = TextAreaField('Сообщение', validators=[DataRequired()])
         form_class.status = SelectField('Статус', 
                                       choices=[('new', 'Новое'), 
