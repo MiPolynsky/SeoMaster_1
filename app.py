@@ -30,6 +30,75 @@ import admin
 def load_user(user_id):
     return User.query.get(int(user_id))
 
+def init_metadata():
+    if PageMetadata.query.count() == 0:
+        initial_metadata = [
+            {
+                'url_path': '/',
+                'title': 'SEO Услуги - Главная',
+                'description': 'Профессиональное SEO продвижение сайтов. Увеличьте видимость вашего сайта в поисковых системах.',
+                'h1': 'Профессиональное SEO продвижение'
+            },
+            {
+                'url_path': '/services',
+                'title': 'SEO Услуги - Наши услуги',
+                'description': 'Полный спектр SEO услуг для вашего бизнеса. От аудита до продвижения.',
+                'h1': 'Все услуги'
+            },
+            {
+                'url_path': '/contact',
+                'title': 'SEO Услуги - Контакты',
+                'description': 'Свяжитесь с нами для консультации по SEO продвижению вашего сайта.',
+                'h1': 'Наши контакты'
+            },
+            {
+                'url_path': '/service/audit',
+                'title': 'SEO Услуги - Аудит сайта',
+                'description': 'Профессиональный аудит сайта для выявления всех ошибок и потенциала роста.',
+                'h1': 'Аудит сайта'
+            },
+            {
+                'url_path': '/service/semantic',
+                'title': 'SEO Услуги - Семантическое ядро',
+                'description': 'Разработка эффективного семантического ядра для вашего сайта.',
+                'h1': 'Разработка семантического ядра'
+            },
+            {
+                'url_path': '/service/copywriting',
+                'title': 'SEO Услуги - Копирайтинг',
+                'description': 'Профессиональный SEO-копирайтинг для вашего сайта.',
+                'h1': 'SEO-копирайтинг'
+            },
+            {
+                'url_path': '/service/ecommerce',
+                'title': 'SEO Услуги - Продвижение интернет-магазинов',
+                'description': 'Специализированное SEO-продвижение для интернет-магазинов.',
+                'h1': 'Продвижение интернет-магазинов'
+            },
+            {
+                'url_path': '/service/business',
+                'title': 'SEO Услуги - Продвижение сайтов-визиток',
+                'description': 'Эффективное продвижение сайтов-визиток и корпоративных сайтов.',
+                'h1': 'Продвижение сайтов-визиток'
+            },
+            {
+                'url_path': '/service/landing',
+                'title': 'SEO Услуги - Продвижение одностраничных сайтов',
+                'description': 'SEO-продвижение лендингов и одностраничных сайтов.',
+                'h1': 'Продвижение одностраничных сайтов'
+            }
+        ]
+
+        for metadata in initial_metadata:
+            page_metadata = PageMetadata(**metadata)
+            db.session.add(page_metadata)
+
+        try:
+            db.session.commit()
+        except Exception as e:
+            db.session.rollback()
+            print(f"Error initializing metadata: {e}")
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -121,6 +190,7 @@ def services():
 
 @app.route('/contact', methods=['GET', 'POST'])
 def contact():
+    metadata = PageMetadata.query.filter_by(url_path='/contact').first()
     if request.method == 'POST':
         name = request.form.get('name')
         email = request.form.get('email')
@@ -148,45 +218,49 @@ def contact():
             flash('Произошла ошибка при отправке сообщения. Пожалуйста, попробуйте позже.', 'error')
             return redirect(url_for('contact'))
 
-    return render_template('contact.html')
+    return render_template('contact.html', metadata=metadata)
 
 @app.route('/service/audit')
 def service_audit():
-    return render_template('service_audit.html')
+    metadata = PageMetadata.query.filter_by(url_path='/service/audit').first()
+    return render_template('service_audit.html', metadata=metadata)
 
 @app.route('/service/semantic')
 def service_semantic():
-    return render_template('service_semantic.html')
+    metadata = PageMetadata.query.filter_by(url_path='/service/semantic').first()
+    return render_template('service_semantic.html', metadata=metadata)
 
 @app.route('/service/copywriting')
 def service_copywriting():
-    return render_template('service_copywriting.html')
+    metadata = PageMetadata.query.filter_by(url_path='/service/copywriting').first()
+    return render_template('service_copywriting.html', metadata=metadata)
 
 @app.route('/service/ecommerce')
 def service_ecommerce():
-    return render_template('service_ecommerce.html')
+    metadata = PageMetadata.query.filter_by(url_path='/service/ecommerce').first()
+    return render_template('service_ecommerce.html', metadata=metadata)
 
 @app.route('/service/business')
 def service_business():
-    return render_template('service_business.html')
+    metadata = PageMetadata.query.filter_by(url_path='/service/business').first()
+    return render_template('service_business.html', metadata=metadata)
 
 @app.route('/service/landing')
 def service_landing():
-    return render_template('service_landing.html')
+    metadata = PageMetadata.query.filter_by(url_path='/service/landing').first()
+    return render_template('service_landing.html', metadata=metadata)
 
 with app.app_context():
     db.create_all()
-    # Удаляем существующего пользователя admin если он есть
-    admin_user = User.query.filter_by(username='admin').first()
-    if admin_user:
-        db.session.delete(admin_user)
-        db.session.commit()
+    init_metadata()  # Initialize metadata after tables are created
 
-    # Создаем нового пользователя admin
-    admin_user = User(username='admin')
-    admin_user.set_password('admin')
-    db.session.add(admin_user)
-    db.session.commit()
+    # Create admin user if it doesn't exist
+    admin_user = User.query.filter_by(username='admin').first()
+    if not admin_user:
+        admin_user = User(username='admin')
+        admin_user.set_password('admin')
+        db.session.add(admin_user)
+        db.session.commit()
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=5000, debug=True)
