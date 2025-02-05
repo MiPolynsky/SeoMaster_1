@@ -18,6 +18,12 @@ app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {
     "pool_pre_ping": True,
 }
 
+@app.before_request
+def redirect_to_domain():
+    if request.headers.get('Host') == 'good-seo.replit.app':
+        url = request.url.replace('good-seo.replit.app', 'good-seo.online', 1)
+        return redirect(url, code=301)
+
 # Добавляем маршрут для robots.txt
 @app.route('/robots.txt')
 def robots():
