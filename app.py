@@ -176,11 +176,17 @@ def service_landing():
 
 with app.app_context():
     db.create_all()
-    if not User.query.filter_by(username='admin').first():
-        admin_user = User(username='admin')
-        admin_user.set_password('admin')
-        db.session.add(admin_user)
+    # Удаляем существующего пользователя admin если он есть
+    admin_user = User.query.filter_by(username='admin').first()
+    if admin_user:
+        db.session.delete(admin_user)
         db.session.commit()
 
+    # Создаем нового пользователя admin
+    admin_user = User(username='admin')
+    admin_user.set_password('admin')
+    db.session.add(admin_user)
+    db.session.commit()
+
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(host="0.0.0.0", port=5000, debug=True)
