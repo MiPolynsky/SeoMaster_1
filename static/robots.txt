@@ -1,0 +1,9 @@
+User-agent: *
+Disallow: /
+
+# Запрещаем индексацию всех страниц сайта
+Disallow: /services
+Disallow: /contact
+Disallow: /service/*
+Disallow: /login
+Disallow: /admin/*
