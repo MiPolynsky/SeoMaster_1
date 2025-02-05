@@ -1,8 +1,8 @@
 from flask_admin import Admin, AdminIndexView, expose
 from flask_admin.contrib.sqla import ModelView
-from flask_login import current_user, LoginManager
-from flask import redirect, url_for, flash
-from wtforms import StringField, TextAreaField
+from flask_login import current_user
+from flask import redirect, url_for
+from wtforms import StringField, TextAreaField, SelectField
 from wtforms.validators import DataRequired
 from models import User, PageMetadata, Feedback
 from app import app, db
@@ -16,35 +16,19 @@ class SecureModelView(ModelView):
 
 class PageMetadataView(SecureModelView):
     column_list = ['url_path', 'title', 'description', 'h1', 'created_at', 'updated_at']
-    form_columns = ['url_path', 'title', 'description', 'h1']
     column_searchable_list = ['url_path', 'title']
     column_filters = ['created_at', 'updated_at']
 
-    form_overrides = {
-        'url_path': StringField,
-        'title': StringField,
-        'description': TextAreaField,
-        'h1': StringField
-    }
+    create_modal = True
+    edit_modal = True
 
-    form_args = {
-        'url_path': {
-            'label': 'URL путь',
-            'validators': [DataRequired()]
-        },
-        'title': {
-            'label': 'Заголовок',
-            'validators': [DataRequired()]
-        },
-        'description': {
-            'label': 'Описание',
-            'validators': [DataRequired()]
-        },
-        'h1': {
-            'label': 'H1 заголовок',
-            'validators': [DataRequired()]
-        }
-    }
+    def scaffold_form(self):
+        form_class = super(PageMetadataView, self).scaffold_form()
+        form_class.url_path = StringField('URL путь', validators=[DataRequired()])
+        form_class.title = StringField('Заголовок', validators=[DataRequired()])
+        form_class.description = TextAreaField('Описание', validators=[DataRequired()])
+        form_class.h1 = StringField('H1 заголовок', validators=[DataRequired()])
+        return form_class
 
     def on_model_change(self, form, model, is_created):
         if is_created:
@@ -57,35 +41,21 @@ class FeedbackModelView(SecureModelView):
     column_filters = ['status', 'created_at']
     form_excluded_columns = ['created_at']
 
-    form_overrides = {
-        'name': StringField,
-        'email': StringField,
-        'subject': StringField,
-        'message': TextAreaField,
-        'status': StringField
-    }
+    create_modal = True
+    edit_modal = True
 
-    form_args = {
-        'name': {
-            'label': 'Имя',
-            'validators': [DataRequired()]
-        },
-        'email': {
-            'label': 'Email',
-            'validators': [DataRequired()]
-        },
-        'subject': {
-            'label': 'Тема',
-            'validators': [DataRequired()]
-        },
-        'message': {
-            'label': 'Сообщение',
-            'validators': [DataRequired()]
-        },
-        'status': {
-            'label': 'Статус'
-        }
-    }
+    def scaffold_form(self):
+        form_class = super(FeedbackModelView, self).scaffold_form()
+        form_class.name = StringField('Имя', validators=[DataRequired()])
+        form_class.email = StringField('Email', validators=[DataRequired()])
+        form_class.subject = StringField('Тема', validators=[DataRequired()])
+        form_class.message = TextAreaField('Сообщение', validators=[DataRequired()])
+        form_class.status = SelectField('Статус', 
+                                      choices=[('new', 'Новое'), 
+                                             ('read', 'Прочитано'), 
+                                             ('responded', 'Отвечено')],
+                                      validators=[DataRequired()])
+        return form_class
 
     column_default_sort = ('created_at', True)
 
@@ -105,7 +75,8 @@ class SecureAdminIndexView(AdminIndexView):
 admin = Admin(app, 
              name='SEO Admin',
              template_mode='bootstrap3',
-             index_view=SecureAdminIndexView())
+             index_view=SecureAdminIndexView(),
+             base_template='admin/base.html')
 
-admin.add_view(PageMetadataView(PageMetadata, db.session))
-admin.add_view(FeedbackModelView(Feedback, db.session))
+admin.add_view(PageMetadataView(PageMetadata, db.session, name='Метаданные'))
+admin.add_view(FeedbackModelView(Feedback, db.session, name='Обратная связь'))
