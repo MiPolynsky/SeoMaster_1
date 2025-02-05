@@ -1,9 +1,11 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, send_from_directory
+from flask import Flask, render_template, request, redirect, url_for, flash, send_from_directory, Response
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from werkzeug.security import generate_password_hash
 import os
 from sqlalchemy.orm import DeclarativeBase
+from datetime import datetime
+import xml.etree.ElementTree as ET
 
 class Base(DeclarativeBase):
     pass
@@ -24,7 +26,6 @@ def redirect_to_domain():
         url = request.url.replace('good-seo.replit.app', 'good-seo.online', 1)
         return redirect(url, code=301)
 
-# Добавляем маршрут для robots.txt
 @app.route('/robots.txt')
 def robots():
     return send_from_directory(app.static_folder, 'robots.txt')
@@ -261,11 +262,46 @@ def service_landing():
     metadata = PageMetadata.query.filter_by(url_path='/service/landing').first()
     return render_template('service_landing.html', metadata=metadata)
 
+@app.route('/sitemap.xml')
+def sitemap():
+    root = ET.Element('urlset')
+    root.set('xmlns', 'http://www.sitemaps.org/schemas/sitemap/0.9')
+
+    urls = [
+        '/',
+        '/services',
+        '/contact',
+        '/service/audit',
+        '/service/semantic',
+        '/service/copywriting',
+        '/service/ecommerce',
+        '/service/business',
+        '/service/landing'
+    ]
+
+    for url in urls:
+        url_elem = ET.SubElement(root, 'url')
+        loc = ET.SubElement(url_elem, 'loc')
+        full_url = 'https://good-seo.online' + url
+        loc.text = full_url
+
+        lastmod = ET.SubElement(url_elem, 'lastmod')
+        lastmod.text = datetime.now().strftime('%Y-%m-%d')
+
+        changefreq = ET.SubElement(url_elem, 'changefreq')
+        changefreq.text = 'weekly'
+
+        priority = ET.SubElement(url_elem, 'priority')
+        priority.text = '1.0' if url == '/' else '0.8'
+
+    tree = ET.ElementTree(root)
+    xml_str = ET.tostring(root, encoding='unicode', method='xml')
+
+    return Response(xml_str, mimetype='application/xml')
+
 with app.app_context():
     db.create_all()
-    init_metadata()  # Initialize metadata after tables are created
-
-    # Create admin user if it doesn't exist
+    init_metadata()
     admin_user = User.query.filter_by(username='admin').first()
     if not admin_user:
         admin_user = User(username='admin')
