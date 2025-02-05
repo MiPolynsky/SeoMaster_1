@@ -2,6 +2,8 @@ from flask_admin import Admin, AdminIndexView, expose
 from flask_admin.contrib.sqla import ModelView
 from flask_login import current_user, LoginManager
 from flask import redirect, url_for, flash
+from wtforms import StringField, TextAreaField
+from wtforms.validators import DataRequired
 from models import User, PageMetadata, Feedback
 from app import app, db
 
@@ -26,7 +28,32 @@ class PageMetadataView(SecureModelView):
     column_searchable_list = ['url_path', 'title']
     column_filters = ['created_at', 'updated_at']
 
-    # Define form widget rendering
+    form_overrides = {
+        'url_path': StringField,
+        'title': StringField,
+        'description': TextAreaField,
+        'h1': StringField
+    }
+
+    form_args = {
+        'url_path': {
+            'label': 'URL путь',
+            'validators': [DataRequired()]
+        },
+        'title': {
+            'label': 'Заголовок',
+            'validators': [DataRequired()]
+        },
+        'description': {
+            'label': 'Описание',
+            'validators': [DataRequired()]
+        },
+        'h1': {
+            'label': 'H1 заголовок',
+            'validators': [DataRequired()]
+        }
+    }
+
     form_widget_args = {
         'url_path': {
             'class': 'form-control'
@@ -35,7 +62,8 @@ class PageMetadataView(SecureModelView):
             'class': 'form-control'
         },
         'description': {
-            'class': 'form-control'
+            'class': 'form-control',
+            'rows': 3
         },
         'h1': {
             'class': 'form-control'
@@ -57,7 +85,36 @@ class FeedbackModelView(SecureModelView):
     column_filters = ['status', 'created_at']
     form_excluded_columns = ['created_at']
 
-    # Define form widget rendering
+    form_overrides = {
+        'name': StringField,
+        'email': StringField,
+        'subject': StringField,
+        'message': TextAreaField,
+        'status': StringField
+    }
+
+    form_args = {
+        'name': {
+            'label': 'Имя',
+            'validators': [DataRequired()]
+        },
+        'email': {
+            'label': 'Email',
+            'validators': [DataRequired()]
+        },
+        'subject': {
+            'label': 'Тема',
+            'validators': [DataRequired()]
+        },
+        'message': {
+            'label': 'Сообщение',
+            'validators': [DataRequired()]
+        },
+        'status': {
+            'label': 'Статус'
+        }
+    }
+
     form_widget_args = {
         'name': {
             'class': 'form-control'
