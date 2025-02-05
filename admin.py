@@ -20,6 +20,15 @@ class SecureModelView(ModelView):
     def inaccessible_callback(self, name, **kwargs):
         return redirect(url_for('login'))
 
+class PageMetadataView(SecureModelView):
+    column_list = ['url_path', 'title', 'description', 'h1', 'created_at', 'updated_at']
+    form_columns = ['url_path', 'title', 'description', 'h1']
+    column_searchable_list = ['url_path', 'title']
+    column_filters = ['created_at', 'updated_at']
+    can_create = True
+    can_edit = True
+    can_delete = True
+
 class FeedbackModelView(SecureModelView):
     column_list = ['name', 'email', 'subject', 'status', 'created_at']
     column_searchable_list = ['name', 'email', 'subject', 'message']
@@ -44,5 +53,5 @@ class SecureAdminIndexView(AdminIndexView):
         return super(SecureAdminIndexView, self).index()
 
 admin = Admin(app, name='SEO Admin', template_mode='bootstrap3', index_view=SecureAdminIndexView())
-admin.add_view(SecureModelView(PageMetadata, db.session))
+admin.add_view(PageMetadataView(PageMetadata, db.session))
 admin.add_view(FeedbackModelView(Feedback, db.session))
