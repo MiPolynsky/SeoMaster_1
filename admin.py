@@ -7,14 +7,6 @@ from wtforms.validators import DataRequired
 from models import User, PageMetadata, Feedback
 from app import app, db
 
-login_manager = LoginManager()
-login_manager.init_app(app)
-login_manager.login_view = 'login'
-
-@login_manager.user_loader
-def load_user(user_id):
-    return User.query.get(int(user_id))
-
 class SecureModelView(ModelView):
     def is_accessible(self):
         return current_user.is_authenticated
@@ -53,26 +45,6 @@ class PageMetadataView(SecureModelView):
             'validators': [DataRequired()]
         }
     }
-
-    form_widget_args = {
-        'url_path': {
-            'class': 'form-control'
-        },
-        'title': {
-            'class': 'form-control'
-        },
-        'description': {
-            'class': 'form-control',
-            'rows': 3
-        },
-        'h1': {
-            'class': 'form-control'
-        }
-    }
-
-    can_create = True
-    can_edit = True
-    can_delete = True
 
     def on_model_change(self, form, model, is_created):
         if is_created:
@@ -115,28 +87,6 @@ class FeedbackModelView(SecureModelView):
         }
     }
 
-    form_widget_args = {
-        'name': {
-            'class': 'form-control'
-        },
-        'email': {
-            'class': 'form-control'
-        },
-        'subject': {
-            'class': 'form-control'
-        },
-        'message': {
-            'class': 'form-control',
-            'rows': 5
-        },
-        'status': {
-            'class': 'form-control'
-        }
-    }
-
-    can_create = False
-    can_delete = True
-    can_edit = True
     column_default_sort = ('created_at', True)
 
 class SecureAdminIndexView(AdminIndexView):
@@ -152,6 +102,10 @@ class SecureAdminIndexView(AdminIndexView):
             return redirect(url_for('login'))
         return super(SecureAdminIndexView, self).index()
 
-admin = Admin(app, name='SEO Admin', template_mode='bootstrap3', index_view=SecureAdminIndexView())
+admin = Admin(app, 
+             name='SEO Admin',
+             template_mode='bootstrap3',
+             index_view=SecureAdminIndexView())
+
 admin.add_view(PageMetadataView(PageMetadata, db.session))
 admin.add_view(FeedbackModelView(Feedback, db.session))
