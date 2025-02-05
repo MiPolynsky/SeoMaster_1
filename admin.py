@@ -21,19 +21,24 @@ class SecureModelView(ModelView):
         return redirect(url_for('login'))
 
 class PageMetadataView(SecureModelView):
-    column_list = ['url_path', 'title', 'description', 'h1', 'created_at', 'updated_at']
-    form_columns = ['url_path', 'title', 'description', 'h1']
-    column_searchable_list = ['url_path', 'title']
-    column_filters = ['created_at', 'updated_at']
+    column_list = ('url_path', 'title', 'description', 'h1', 'created_at', 'updated_at')
+    form_columns = ('url_path', 'title', 'description', 'h1')
+    column_searchable_list = ('url_path', 'title')
+    column_filters = ('created_at', 'updated_at')
     can_create = True
     can_edit = True
     can_delete = True
 
+    def on_model_change(self, form, model, is_created):
+        if is_created:
+            model.created_at = db.func.now()
+        model.updated_at = db.func.now()
+
 class FeedbackModelView(SecureModelView):
-    column_list = ['name', 'email', 'subject', 'status', 'created_at']
-    column_searchable_list = ['name', 'email', 'subject', 'message']
-    column_filters = ['status', 'created_at']
-    form_excluded_columns = ['created_at']
+    column_list = ('name', 'email', 'subject', 'status', 'created_at')
+    column_searchable_list = ('name', 'email', 'subject', 'message')
+    column_filters = ('status', 'created_at')
+    form_excluded_columns = ('created_at',)
     can_create = False
     can_delete = True
     can_edit = True
