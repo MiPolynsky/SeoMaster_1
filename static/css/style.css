@@ -43,7 +43,6 @@ body {
     color: inherit;
 }
 
-
 .service-card:hover {
     transform: translateY(-10px);
     box-shadow: 0 15px 30px rgba(0,0,0,0.2);
@@ -190,4 +189,52 @@ body {
 .service-features i {
     color: var(--secondary-color);
     margin-right: 10px;
+}
+
+.price .h2 {
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+.price .text-muted {
+    font-size: 0.9rem;
+}
+
+.experience-card {
+    background: var(--card-bg);
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    height: 100%;
+    cursor: pointer;
+}
+
+.experience-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+}
+
+.experience-card i {
+    font-size: 2rem;
+    color: var(--secondary-color);
+    display: block;
+}
+
+.experience-card h4 {
+    font-size: 1.1rem;
+    color: var(--primary-color);
+    margin-bottom: 0;
+}
+
+.pricing-section .card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.pricing-section .card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+}
+
+.pricing-section .list-unstyled li {
+    padding: 0.5rem 0;
 }
