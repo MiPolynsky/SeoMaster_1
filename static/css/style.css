@@ -238,3 +238,26 @@ body {
 .pricing-section .list-unstyled li {
     padding: 0.5rem 0;
 }
+
+/* Add animation keyframes after line 240 */
+@keyframes rotateFlower {
+    0% {
+        transform: rotate(0deg) scale(1);
+    }
+    50% {
+        transform: rotate(180deg) scale(1.2);
+    }
+    100% {
+        transform: rotate(360deg) scale(1);
+    }
+}
+
+/* Add hover effect for flower icon */
+.experience-card[href*="flowers"] .fa-fan {
+    transition: all 0.3s ease;
+}
+
+.experience-card[href*="flowers"]:hover .fa-fan {
+    animation: rotateFlower 1s ease infinite;
+    color: #e91e63; /* Pink color for flower icon on hover */
+}
