@@ -86,31 +86,57 @@ body {
     border-radius: 1rem;
     overflow: hidden;
     box-shadow: var(--shadow-md);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     height: 100%;
     cursor: pointer;
     border: 1px solid rgba(0,0,0,0.05);
+    position: relative;
 }
 
 .service-card:hover {
-    transform: translateY(-5px);
+    transform: translateY(-8px) scale(1.02);
     box-shadow: var(--shadow-lg);
+    background: linear-gradient(
+        145deg,
+        var(--card-bg) 0%,
+        rgba(37, 99, 235, 0.05) 100%
+    );
 }
 
 .service-card-inner {
     padding: 2rem;
     text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.service-card:hover .service-card-inner {
+    transform: translateY(-5px);
 }
 
 .service-icon {
     font-size: 2.5rem;
     color: var(--primary-color);
     margin-bottom: 1.5rem;
-    transition: transform 0.3s ease;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    display: inline-block;
 }
 
 .service-card:hover .service-icon {
-    transform: scale(1.1);
+    transform: scale(1.15) rotate(10deg);
+    color: var(--primary-dark);
+    animation: iconPulse 1s ease-in-out infinite;
+}
+
+@keyframes iconPulse {
+    0% {
+        transform: scale(1.15) rotate(10deg);
+    }
+    50% {
+        transform: scale(1.25) rotate(-5deg);
+    }
+    100% {
+        transform: scale(1.15) rotate(10deg);
+    }
 }
 
 .service-card h3 {
@@ -118,12 +144,44 @@ body {
     font-size: 1.25rem;
     font-weight: 600;
     margin-bottom: 1rem;
+    transition: color 0.3s ease;
+}
+
+.service-card:hover h3 {
+    color: var(--primary-color);
 }
 
 .service-card p {
     color: var(--gray-medium);
     font-size: 1rem;
     line-height: 1.6;
+    transition: all 0.3s ease;
+    opacity: 0.8;
+}
+
+.service-card:hover p {
+    opacity: 1;
+}
+
+.service-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 1rem;
+    background: radial-gradient(
+        circle at center,
+        rgba(37, 99, 235, 0.1) 0%,
+        transparent 70%
+    );
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.service-card:hover::after {
+    opacity: 1;
 }
 
 .experience-card {
