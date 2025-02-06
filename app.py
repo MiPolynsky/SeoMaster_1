@@ -1,16 +1,12 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, send_from_directory, Response
-from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from werkzeug.security import generate_password_hash
 import os
-from sqlalchemy.orm import DeclarativeBase
 from datetime import datetime
 import xml.etree.ElementTree as ET
+from database import db
+from models import User, PageMetadata, Feedback, IndustryPage
 
-class Base(DeclarativeBase):
-    pass
-
-db = SQLAlchemy(model_class=Base)
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get('FLASK_SECRET_KEY', 'your-secret-key-here')
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
@@ -35,7 +31,6 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
 
-from models import User, PageMetadata, Feedback
 import admin
 
 @login_manager.user_loader
@@ -110,6 +105,38 @@ def init_metadata():
         except Exception as e:
             db.session.rollback()
             print(f"Error initializing metadata: {e}")
+
+    if IndustryPage.query.count() == 0:
+        industries = [
+            {
+                'industry_code': 'dentistry',
+                'name': 'Стоматология',
+                'title': 'SEO продвижение стоматологии | Раскрутка сайта стоматологической клиники',
+                'description': 'Профессиональное SEO продвижение сайтов стоматологических клиник. Увеличение целевого трафика и привлечение новых пациентов.',
+                'h1': 'SEO продвижение стоматологии',
+                'icon': 'fa-tooth'
+            },
+            {
+                'industry_code': 'furniture',
+                'name': 'Мебельный салон',
+                'title': 'SEO продвижение мебельного магазина | Раскрутка сайта мебели',
+                'description': 'Комплексное SEO продвижение сайтов мебельных салонов и магазинов. Увеличение продаж мебели через поисковые системы.',
+                'h1': 'SEO продвижение мебельного салона',
+                'icon': 'fa-couch'
+            },
+            # Добавьте остальные тематики по аналогии
+        ]
+
+        for industry_data in industries:
+            industry = IndustryPage(**industry_data)
+            db.session.add(industry)
+
+        try:
+            db.session.commit()
+        except Exception as e:
+            db.session.rollback()
+            print(f"Error initializing industries: {e}")
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -298,6 +325,11 @@ def sitemap():
     xml_str = ET.tostring(root, encoding='unicode', method='xml')
 
     return Response(xml_str, mimetype='application/xml')
+
+@app.route('/industry/<industry_code>')
+def industry_page(industry_code):
+    industry = IndustryPage.query.filter_by(industry_code=industry_code).first_or_404()
+    return render_template('industry.html', industry=industry)
 
 with app.app_context():
     db.create_all()
