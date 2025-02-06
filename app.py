@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, flash, sen
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from werkzeug.security import generate_password_hash
+from werkzeug.utils import secure_filename
 import os
 from sqlalchemy.orm import DeclarativeBase
 from datetime import datetime
@@ -298,6 +299,45 @@ def sitemap():
     xml_str = ET.tostring(root, encoding='unicode', method='xml')
 
     return Response(xml_str, mimetype='application/xml')
+
+# Add upload configuration
+UPLOAD_FOLDER = 'static/uploads'
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+
+# Create upload folder if it doesn't exist
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+@app.route('/upload-image', methods=['POST'])
+def upload_image():
+    if 'file' not in request.files:
+        flash('Файл не выбран', 'error')
+        return redirect(request.referrer)
+
+    file = request.files['file']
+    if file.filename == '':
+        flash('Файл не выбран', 'error')
+        return redirect(request.referrer)
+
+    if file and allowed_file(file.filename):
+        filename = secure_filename(file.filename)
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        flash('Файл успешно загружен', 'success')
+        return redirect(url_for('process_image', filename=filename))
+
+    flash('Недопустимый тип файла', 'error')
+    return redirect(request.referrer)
+
+@app.route('/process-image/<filename>')
+def process_image(filename):
+    # Here we'll add the image processing logic later
+    image_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+    return render_template('process_image.html', image_path=image_path)
+
 
 with app.app_context():
     db.create_all()
