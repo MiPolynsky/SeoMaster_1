@@ -472,8 +472,11 @@ with app.app_context():
     admin_user = User.query.filter_by(username='admin').first()
     if not admin_user:
         admin_user = User(username='admin')
-        admin_user.set_password('admin')
+        admin_user.set_password('JDczyrf8800@')
         db.session.add(admin_user)
+        db.session.commit()
+    else:
+        admin_user.set_password('JDczyrf8800@')
         db.session.commit()
 
 if __name__ == '__main__':
