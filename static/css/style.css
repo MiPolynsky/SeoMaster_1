@@ -340,3 +340,96 @@ body {
 .service-content:hover .service-icon i {
     transform: scale(1.1);
 }
+
+/* Add responsive styles after line 342 */
+
+/* Mobile responsive styles */
+@media (max-width: 768px) {
+    .hero-section {
+        padding: 3rem 0;
+    }
+
+    .hero-section .display-4 {
+        display: none; /* Hide title on mobile */
+    }
+
+    .hero-section .lead {
+        font-size: 1.1rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .hero-section .card {
+        margin-top: 1rem;
+    }
+
+    .navbar-toggler {
+        border-color: var(--primary-color);
+    }
+
+    .navbar-toggler-icon {
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(37, 99, 235, 1)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+    }
+
+    .navbar-collapse {
+        background: var(--card-bg);
+        padding: 1rem;
+        border-radius: 1rem;
+        margin-top: 1rem;
+        box-shadow: var(--shadow-md);
+    }
+
+    .service-card {
+        margin-bottom: 1.5rem;
+    }
+
+    .service-card-inner {
+        padding: 1.5rem;
+    }
+
+    .service-icon {
+        font-size: 2rem;
+        margin-bottom: 1rem;
+    }
+
+    .service-card h3 {
+        font-size: 1.1rem;
+    }
+
+    .service-features li {
+        padding: 0.75rem;
+        font-size: 0.9rem;
+    }
+
+    .pricing-section .card {
+        margin-bottom: 1.5rem;
+    }
+
+    .experience-card {
+        margin-bottom: 1rem;
+        padding: 1.5rem;
+    }
+
+    .footer {
+        text-align: center;
+        padding: 2rem 0;
+    }
+
+    .footer .col-md-4 {
+        margin-bottom: 2rem;
+    }
+}
+
+/* Tablet responsive styles */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .hero-section {
+        padding: 4rem 0;
+    }
+
+    .hero-section .display-4 {
+        font-size: 2.8rem;
+    }
+
+    .service-card-inner {
+        padding: 1.75rem;
+    }
+}
