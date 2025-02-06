@@ -314,3 +314,29 @@ body {
     background-color: var(--primary-dark);
     transform: translateY(-1px);
 }
+
+/* New styles for service content and icon centering */
+.service-content {
+    background: var(--card-bg);
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: var(--shadow-md);
+}
+
+.service-content .service-icon {
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.service-content .service-icon i {
+    font-size: 3rem;
+    color: var(--primary-color);
+    transition: transform 0.3s ease;
+}
+
+.service-content:hover .service-icon i {
+    transform: scale(1.1);
+}
