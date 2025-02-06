@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}{{ industry.title }}{% endblock %}
+
+{% block content %}
+<div class="industry-page">
+    <div class="container py-5">
+        <h1 class="text-center mb-4">{{ industry.h1 }}</h1>
+        <div class="row">
+            <div class="col-md-8 mx-auto">
+                <div class="service-content">
+                    <div class="service-icon mb-4 text-center">
+                        <i class="fas {{ industry.icon }} fa-3x"></i>
+                    </div>
+                    
+                    <h2 class="mb-4">Что включает SEO-продвижение?</h2>
+                    <ul class="service-features">
+                        <li><i class="fas fa-check"></i> Анализ конкурентов в вашей нише</li>
+                        <li><i class="fas fa-check"></i> Техническая оптимизация сайта</li>
+                        <li><i class="fas fa-check"></i> Составление семантического ядра</li>
+                        <li><i class="fas fa-check"></i> Оптимизация контента</li>
+                        <li><i class="fas fa-check"></i> Улучшение поведенческих факторов</li>
+                        <li><i class="fas fa-check"></i> Работа с внешними факторами</li>
+                        <li><i class="fas fa-check"></i> Ежемесячная отчетность</li>
+                    </ul>
+
+                    {% if industry.seo_text %}
+                    <div class="seo-text mt-5">
+                        {{ industry.seo_text | safe }}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
