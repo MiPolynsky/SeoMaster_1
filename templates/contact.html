@@ -53,27 +53,25 @@
 {% endblock %}
 
 {% block scripts %}
-<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY"></script>
+<script src="https://api-maps.yandex.ru/2.1/?apikey=default&lang=ru_RU"></script>
 <script>
-function initMap() {
-    const office = { lat: 54.9885, lng: 73.3673 }; // Координаты Омска
-    const map = new google.maps.Map(document.getElementById("map"), {
-        zoom: 15,
-        center: office,
-        styles: [
-            {
-                "featureType": "all",
-                "elementType": "geometry",
-                "stylers": [{"color": "#f5f5f5"}]
-            }
-        ]
+ymaps.ready(function () {
+    var myMap = new ymaps.Map('map', {
+        center: [54.992306, 73.374142],
+        zoom: 16
+    }, {
+        searchControlProvider: 'yandex#search'
     });
-    const marker = new google.maps.Marker({
-        position: office,
-        map: map,
-        title: "SEO Услуги"
+
+    var myPlacemark = new ymaps.Placemark([54.992306, 73.374142], {
+        hintContent: 'SEO Услуги',
+        balloonContent: 'г. Омск, ул. Гагарина 8/1'
+    }, {
+        preset: 'islands#blueStretchyIcon'
     });
-}
-window.onload = initMap;
+
+    myMap.geoObjects.add(myPlacemark);
+    myMap.behaviors.disable('scrollZoom');
+});
 </script>
 {% endblock %}
