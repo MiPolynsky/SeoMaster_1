@@ -4,15 +4,15 @@
 
 {% block content %}
 <div class="industry-page">
-    <div class="container py-5">
-        <h1 class="text-center mb-4">{{ industry.h1 }}</h1>
-        <div class="row">
-            <div class="col-md-8 mx-auto">
+    <div class="container-fluid py-5">
+        <div class="row justify-content-center">
+            <div class="col-xl-10">
+                <h1 class="text-center mb-5">{{ industry.h1 }}</h1>
                 <div class="service-content">
                     <div class="row">
                         <div class="col-md-6">
                             <div class="service-icon mb-4 text-center">
-                                <i class="fas {{ industry.icon }} fa-3x"></i>
+                                <i class="fas {{ industry.icon }} fa-4x"></i>
                             </div>
                             <h2 class="mb-4">Что включает SEO-продвижение?</h2>
                             <ul class="service-features">
@@ -58,16 +58,20 @@
                         </div>
                     </div>
                 </div>
-
-                {% if industry.seo_text %}
-                <div class="mt-5">
-                    <div class="seo-content">
-                        {{ industry.seo_text | safe }}
-                    </div>
-                </div>
-                {% endif %}
             </div>
         </div>
     </div>
+
+    {% if industry.seo_text %}
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-xl-10">
+                <div class="seo-content">
+                    {{ industry.seo_text | safe }}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
 </div>
 {% endblock %}

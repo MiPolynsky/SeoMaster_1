@@ -318,9 +318,10 @@ body {
 /* New styles for service content and icon centering */
 .service-content {
     background: var(--card-bg);
-    padding: 2rem;
-    border-radius: 1rem;
-    box-shadow: var(--shadow-md);
+    padding: 3rem;
+    border-radius: 1.5rem;
+    box-shadow: var(--shadow-lg);
+    margin: 0 auto;
 }
 
 .service-content .service-icon {
@@ -328,11 +329,11 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-bottom: 2rem;
+    margin-bottom: 3rem;
 }
 
 .service-content .service-icon i {
-    font-size: 3rem;
+    font-size: 4rem;
     color: var(--primary-color);
     transition: transform 0.3s ease;
 }
@@ -341,29 +342,31 @@ body {
     transform: scale(1.1);
 }
 
-
-/* Add responsive styles after line 342 */
-
 .service-content .col-md-6:first-child {
-    border-right: 1px solid rgba(0,0,0,0.1);
-    padding-right: 2rem;
+    border-right: 2px solid rgba(0,0,0,0.05);
+    padding-right: 3rem;
 }
 
 .service-content .col-md-6:last-child {
-    padding-left: 2rem;
+    padding-left: 3rem;
 }
 
 .contact-form-section {
     background: var(--gray-light);
-    padding: 2rem;
-    border-radius: 1rem;
+    padding: 2.5rem;
+    border-radius: 1.5rem;
     box-shadow: var(--shadow-sm);
+    border: 1px solid rgba(0,0,0,0.05);
 }
 
 @media (max-width: 768px) {
+    .service-content {
+        padding: 2rem;
+    }
+
     .service-content .col-md-6:first-child {
         border-right: none;
-        border-bottom: 1px solid rgba(0,0,0,0.1);
+        border-bottom: 2px solid rgba(0,0,0,0.05);
         padding-right: 1rem;
         padding-bottom: 2rem;
         margin-bottom: 2rem;
@@ -466,7 +469,6 @@ body {
 }
 
 /* Add these styles at the end of the file */
-
 .seo-text {
     background: var(--gray-light);
     padding: 2rem;
