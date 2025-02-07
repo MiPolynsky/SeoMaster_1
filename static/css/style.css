@@ -341,10 +341,41 @@ body {
     transform: scale(1.1);
 }
 
+
 /* Add responsive styles after line 342 */
 
-/* Mobile responsive styles */
+.service-content .col-md-6:first-child {
+    border-right: 1px solid rgba(0,0,0,0.1);
+    padding-right: 2rem;
+}
+
+.service-content .col-md-6:last-child {
+    padding-left: 2rem;
+}
+
+.contact-form-section {
+    background: var(--gray-light);
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: var(--shadow-sm);
+}
+
 @media (max-width: 768px) {
+    .service-content .col-md-6:first-child {
+        border-right: none;
+        border-bottom: 1px solid rgba(0,0,0,0.1);
+        padding-right: 1rem;
+        padding-bottom: 2rem;
+        margin-bottom: 2rem;
+    }
+
+    .service-content .col-md-6:last-child {
+        padding-left: 1rem;
+    }
+
+    .contact-form-section {
+        padding: 1.5rem;
+    }
     .hero-section {
         padding: 3rem 0;
     }
