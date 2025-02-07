@@ -433,3 +433,56 @@ body {
         padding: 1.75rem;
     }
 }
+
+/* Add these styles at the end of the file */
+
+.seo-text {
+    background: var(--gray-light);
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: var(--shadow-sm);
+    line-height: 1.8;
+}
+
+.seo-text h2 {
+    color: var(--primary-color);
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.seo-text h3 {
+    color: var(--text-color);
+    margin-bottom: 1.2rem;
+    font-size: 1.3rem;
+    font-weight: 600;
+}
+
+.seo-text p {
+    margin-bottom: 1.2rem;
+    color: var(--gray-medium);
+}
+
+.seo-text ul, .seo-text ol {
+    margin-bottom: 1.2rem;
+    padding-left: 1.5rem;
+}
+
+.seo-text li {
+    margin-bottom: 0.5rem;
+    color: var(--gray-medium);
+}
+
+@media (max-width: 768px) {
+    .seo-text {
+        padding: 1.5rem;
+    }
+
+    .seo-text h2 {
+        font-size: 1.3rem;
+    }
+
+    .seo-text h3 {
+        font-size: 1.2rem;
+    }
+}
