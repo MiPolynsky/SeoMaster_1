@@ -9,20 +9,54 @@
         <div class="row">
             <div class="col-md-8 mx-auto">
                 <div class="service-content">
-                    <div class="service-icon mb-4 text-center">
-                        <i class="fas {{ industry.icon }} fa-3x"></i>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="service-icon mb-4 text-center">
+                                <i class="fas {{ industry.icon }} fa-3x"></i>
+                            </div>
+                            <h2 class="mb-4">Что включает SEO-продвижение?</h2>
+                            <ul class="service-features">
+                                <li><i class="fas fa-check"></i> Анализ конкурентов в вашей нише</li>
+                                <li><i class="fas fa-check"></i> Техническая оптимизация сайта</li>
+                                <li><i class="fas fa-check"></i> Составление семантического ядра</li>
+                                <li><i class="fas fa-check"></i> Оптимизация контента</li>
+                                <li><i class="fas fa-check"></i> Улучшение поведенческих факторов</li>
+                                <li><i class="fas fa-check"></i> Работа с внешними факторами</li>
+                                <li><i class="fas fa-check"></i> Ежемесячная отчетность</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="contact-form-section">
+                                <h2 class="text-center mb-4">Получить консультацию</h2>
+                                {% with messages = get_flashed_messages(with_categories=true) %}
+                                    {% if messages %}
+                                        {% for category, message in messages %}
+                                            <div class="alert alert-{{ category }}">{{ message }}</div>
+                                        {% endfor %}
+                                    {% endif %}
+                                {% endwith %}
+                                <form method="POST" action="{{ url_for('contact') }}" class="industry-contact-form">
+                                    <div class="mb-3">
+                                        <label for="name" class="form-label">Ваше имя</label>
+                                        <input type="text" class="form-control" id="name" name="name" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="email" class="form-label">Email</label>
+                                        <input type="email" class="form-control" id="email" name="email" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="phone" class="form-label">Номер телефона</label>
+                                        <input type="tel" class="form-control" id="phone" name="phone" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="message" class="form-label">Сообщение</label>
+                                        <textarea class="form-control" id="message" name="message" rows="3" required>Интересует продвижение в тематике: {{ industry.name }}</textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary w-100">Отправить сообщение</button>
+                                </form>
+                            </div>
+                        </div>
                     </div>
-
-                    <h2 class="mb-4">Что включает SEO-продвижение?</h2>
-                    <ul class="service-features">
-                        <li><i class="fas fa-check"></i> Анализ конкурентов в вашей нише</li>
-                        <li><i class="fas fa-check"></i> Техническая оптимизация сайта</li>
-                        <li><i class="fas fa-check"></i> Составление семантического ядра</li>
-                        <li><i class="fas fa-check"></i> Оптимизация контента</li>
-                        <li><i class="fas fa-check"></i> Улучшение поведенческих факторов</li>
-                        <li><i class="fas fa-check"></i> Работа с внешними факторами</li>
-                        <li><i class="fas fa-check"></i> Ежемесячная отчетность</li>
-                    </ul>
                 </div>
 
                 {% if industry.seo_text %}
