@@ -466,6 +466,10 @@ def industry_page(industry_code):
     industry = IndustryPage.query.filter_by(industry_code=industry_code).first_or_404()
     return render_template('industry.html', industry=industry)
 
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('error_404.html'), 404
+
 with app.app_context():
     db.create_all()
     init_metadata()
