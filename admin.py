@@ -44,6 +44,21 @@ class IndustryPageView(SecureModelView):
     create_modal = True
     edit_modal = True
 
+    # Configure which fields should use a larger input area
+    form_widget_args = {
+        'seo_text': {
+            'rows': 15,
+            'style': 'font-family: monospace; width: 100%;'
+        }
+    }
+
+    # Add help text for the SEO text field
+    form_args = {
+        'seo_text': {
+            'description': 'Поддерживает HTML-разметку. Используйте теги для форматирования текста.'
+        }
+    }
+
     def scaffold_form(self):
         form_class = super(IndustryPageView, self).scaffold_form()
         form_class.industry_code = StringField('Код тематики', validators=[DataRequired()])
