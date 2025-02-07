@@ -33,9 +33,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
         if (!keywords.includes(keyword)) {
             keywords.push(keyword);
-            // Добавляем класс для анимации
+            // Добавляем класс для постоянной отметки
+            element.classList.add('added');
             element.classList.add('adding');
-            // Удаляем класс после завершения анимации
+            // Удаляем только класс анимации
             setTimeout(() => {
                 element.classList.remove('adding');
             }, 500);
