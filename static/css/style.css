@@ -771,3 +771,110 @@ body {
         margin: 0.5rem 0;
     }
 }
+
+/* Contact page styles */
+.contact-page {
+    background: var(--bg-color);
+}
+
+.contact-info-card,
+.contact-form-card {
+    background: var(--card-bg);
+    border-radius: 1rem;
+    padding: 2rem;
+    height: 100%;
+    box-shadow: var(--shadow-md);
+    border: 1px solid rgba(0,0,0,0.05);
+}
+
+.contact-details {
+    padding: 1rem 0;
+}
+
+.contact-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    background: var(--gray-light);
+    border-radius: 0.5rem;
+    transition: transform 0.3s ease;
+}
+
+.contact-item:hover {
+    transform: translateX(5px);
+    background: rgba(37, 99, 235, 0.05);
+}
+
+.contact-item i {
+    color: var(--primary-color);
+    font-size: 1.2rem;
+    width: 2rem;
+}
+
+.contact-item span {
+    color: var(--text-color);
+    font-weight: 500;
+}
+
+.map-container {
+    margin-top: 2rem;
+    border-radius: 1rem;
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+}
+
+#map {
+    height: 300px;
+    width: 100%;
+    border-radius: 1rem;
+}
+
+.contact-form-card .input-group-text {
+    background-color: var(--gray-light);
+    border: 1px solid rgba(0,0,0,0.1);
+    color: var(--primary-color);
+}
+
+.contact-form-card .form-control {
+    border: 1px solid rgba(0,0,0,0.1);
+    padding: 0.75rem;
+}
+
+.contact-form-card .form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(37, 99, 235, 0.25);
+}
+
+.section-title {
+    color: var(--primary-color);
+    font-weight: 600;
+    position: relative;
+    padding-bottom: 1rem;
+}
+
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 50px;
+    height: 3px;
+    background: var(--primary-color);
+}
+
+@media (max-width: 768px) {
+    .contact-info-card,
+    .contact-form-card {
+        padding: 1.5rem;
+    }
+
+    .contact-item {
+        padding: 0.75rem;
+        margin-bottom: 1rem;
+    }
+
+    #map {
+        height: 250px;
+    }
+}
