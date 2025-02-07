@@ -15,6 +15,9 @@
                                 <i class="fas {{ industry.icon }} fa-4x"></i>
                             </div>
                             <h2 class="mb-4">Что включает SEO-продвижение?</h2>
+                            <button type="button" class="btn btn-outline-primary mb-4" data-bs-toggle="modal" data-bs-target="#keywordSuggestionModal">
+                                <i class="fas fa-lightbulb me-2"></i>Подобрать ключевые слова
+                            </button>
                             <ul class="service-features">
                                 <li><i class="fas fa-check"></i> Анализ конкурентов в вашей нише</li>
                                 <li><i class="fas fa-check"></i> Техническая оптимизация сайта</li>
@@ -73,5 +76,47 @@
         </div>
     </div>
     {% endif %}
+
+    <!-- Модальное окно для подбора ключевых слов -->
+    <div class="modal fade" id="keywordSuggestionModal" tabindex="-1" aria-labelledby="keywordSuggestionModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="keywordSuggestionModalLabel">Подбор ключевых слов для {{ industry.name }}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="keyword-search-section mb-4">
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="keywordInput" placeholder="Введите ключевое слово...">
+                            <button class="btn btn-primary" type="button" id="searchKeywords">
+                                <i class="fas fa-search me-2"></i>Искать
+                            </button>
+                        </div>
+                    </div>
+                    <div class="keywords-result" id="keywordsResult">
+                        <div class="keywords-loading d-none">
+                            <div class="text-center">
+                                <div class="spinner-border text-primary" role="status">
+                                    <span class="visually-hidden">Загрузка...</span>
+                                </div>
+                                <p class="mt-2">Подбираем ключевые слова...</p>
+                            </div>
+                        </div>
+                        <div class="keywords-list">
+                            <!-- Здесь будут отображаться результаты -->
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/keyword-suggestions.js') }}"></script>
 {% endblock %}

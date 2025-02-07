@@ -573,3 +573,100 @@ body {
         font-size: 1.2rem;
     }
 }
+
+/* Добавляем стили для модального окна с ключевыми словами в конец файла */
+.modal-content {
+    border: none;
+    border-radius: 1rem;
+    box-shadow: var(--shadow-lg);
+}
+
+.modal-header {
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    padding: 1.5rem;
+}
+
+.modal-body {
+    padding: 1.5rem;
+}
+
+.modal-footer {
+    border-top: 1px solid rgba(0,0,0,0.05);
+    padding: 1.5rem;
+}
+
+.keyword-search-section {
+    background: var(--gray-light);
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+}
+
+.keyword-search-section .input-group {
+    box-shadow: var(--shadow-sm);
+}
+
+.keywords-result {
+    min-height: 200px;
+}
+
+.keywords-loading {
+    padding: 2rem;
+}
+
+.keywords-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+    padding: 1rem 0;
+}
+
+.keyword-item {
+    background: var(--gray-light);
+    padding: 1rem;
+    border-radius: 0.5rem;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: 1px solid rgba(0,0,0,0.05);
+}
+
+.keyword-item:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-sm);
+    background: white;
+}
+
+.keyword-item .keyword-text {
+    font-weight: 500;
+    color: var(--text-color);
+    margin-bottom: 0.5rem;
+}
+
+.keyword-item .keyword-metrics {
+    font-size: 0.875rem;
+    color: var(--gray-medium);
+}
+
+/* Анимация появления модального окна */
+.modal.fade .modal-dialog {
+    transform: scale(0.95);
+    transition: transform 0.3s ease-out;
+}
+
+.modal.show .modal-dialog {
+    transform: scale(1);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.keyword-item {
+    animation: fadeIn 0.3s ease-out forwards;
+}
