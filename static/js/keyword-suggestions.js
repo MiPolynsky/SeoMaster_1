@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const keywordsResult = document.getElementById('keywordsResult');
     const keywordsList = keywordsResult.querySelector('.keywords-list');
     const loadingIndicator = keywordsResult.querySelector('.keywords-loading');
+    const messageTextarea = document.getElementById('message');
 
     // Функция для показа индикатора загрузки
     function showLoading() {
@@ -14,6 +15,27 @@ document.addEventListener('DOMContentLoaded', function() {
     // Функция для скрытия индикатора загрузки
     function hideLoading() {
         loadingIndicator.classList.add('d-none');
+    }
+
+    // Функция для добавления ключевого слова в сообщение
+    function addKeywordToMessage(keyword) {
+        let currentMessage = messageTextarea.value;
+        let baseMessage = currentMessage.split('Ключевые слова:')[0].trim();
+        let keywords = [];
+
+        if (currentMessage.includes('Ключевые слова:')) {
+            keywords = currentMessage
+                .split('Ключевые слова:')[1]
+                .split(',')
+                .map(k => k.trim())
+                .filter(k => k !== '');
+        }
+
+        if (!keywords.includes(keyword)) {
+            keywords.push(keyword);
+        }
+
+        messageTextarea.value = baseMessage + '\nКлючевые слова: ' + keywords.join(', ');
     }
 
     // Функция для отображения ключевых слов
@@ -35,6 +57,12 @@ document.addEventListener('DOMContentLoaded', function() {
                     </span>
                 </div>
             `;
+
+            // Добавляем обработчик клика для добавления ключевого слова в сообщение
+            keywordItem.addEventListener('click', () => {
+                addKeywordToMessage(keyword.text);
+            });
+
             keywordsList.appendChild(keywordItem);
         });
     }
@@ -50,7 +78,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // Здесь будет запрос к серверу для получения ключевых слов
             // Пока используем тестовые данные
             await new Promise(resolve => setTimeout(resolve, 1500)); // Имитация задержки запроса
-            
+
             const mockKeywords = [
                 { text: query + " услуги", volume: "1,200", difficulty: "Средняя" },
                 { text: query + " цена", volume: "890", difficulty: "Низкая" },
