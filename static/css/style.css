@@ -702,3 +702,72 @@ body {
     box-shadow: var(--shadow-sm);
     animation: addKeyword 0.5s ease-out;
 }
+
+/* Добавляем стили для страницы 404 в конец файла */
+.error-page {
+    min-height: 70vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--gray-light);
+}
+
+.error-content {
+    text-align: center;
+    padding: 2rem;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.error-content .display-1 {
+    color: var(--primary-color);
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+    margin-bottom: 1rem;
+}
+
+.error-icon {
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.error-actions {
+    margin-top: 2rem;
+}
+
+.error-actions .btn {
+    margin: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.error-actions .btn:hover {
+    transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+    .error-content {
+        padding: 1rem;
+    }
+
+    .error-content .display-1 {
+        font-size: 4rem;
+    }
+
+    .error-actions .btn {
+        display: block;
+        width: 100%;
+        margin: 0.5rem 0;
+    }
+}
