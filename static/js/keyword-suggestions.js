@@ -17,8 +17,8 @@ document.addEventListener('DOMContentLoaded', function() {
         loadingIndicator.classList.add('d-none');
     }
 
-    // Функция для добавления ключевого слова в сообщение
-    function addKeywordToMessage(keyword) {
+    // В функции addKeywordToMessage добавим анимацию
+    function addKeywordToMessage(keyword, element) {
         let currentMessage = messageTextarea.value;
         let baseMessage = currentMessage.split('Ключевые слова:')[0].trim();
         let keywords = [];
@@ -33,12 +33,18 @@ document.addEventListener('DOMContentLoaded', function() {
 
         if (!keywords.includes(keyword)) {
             keywords.push(keyword);
+            // Добавляем класс для анимации
+            element.classList.add('adding');
+            // Удаляем класс после завершения анимации
+            setTimeout(() => {
+                element.classList.remove('adding');
+            }, 500);
         }
 
         messageTextarea.value = baseMessage + '\nКлючевые слова: ' + keywords.join(', ');
     }
 
-    // Функция для отображения ключевых слов
+    // В функции displayKeywords обновим обработчик клика
     function displayKeywords(keywords) {
         keywordsList.innerHTML = '';
         keywords.forEach((keyword, index) => {
@@ -58,9 +64,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 </div>
             `;
 
-            // Добавляем обработчик клика для добавления ключевого слова в сообщение
+            // Обновленный обработчик клика с передачей элемента
             keywordItem.addEventListener('click', () => {
-                addKeywordToMessage(keyword.text);
+                addKeywordToMessage(keyword.text, keywordItem);
             });
 
             keywordsList.appendChild(keywordItem);
