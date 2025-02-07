@@ -12,7 +12,7 @@
                     <div class="service-icon mb-4 text-center">
                         <i class="fas {{ industry.icon }} fa-3x"></i>
                     </div>
-                    
+
                     <h2 class="mb-4">Что включает SEO-продвижение?</h2>
                     <ul class="service-features">
                         <li><i class="fas fa-check"></i> Анализ конкурентов в вашей нише</li>
@@ -23,13 +23,15 @@
                         <li><i class="fas fa-check"></i> Работа с внешними факторами</li>
                         <li><i class="fas fa-check"></i> Ежемесячная отчетность</li>
                     </ul>
+                </div>
 
-                    {% if industry.seo_text %}
-                    <div class="seo-text mt-5">
+                {% if industry.seo_text %}
+                <div class="mt-5">
+                    <div class="seo-content">
                         {{ industry.seo_text | safe }}
                     </div>
-                    {% endif %}
                 </div>
+                {% endif %}
             </div>
         </div>
     </div>
