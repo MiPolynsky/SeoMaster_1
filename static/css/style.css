@@ -669,27 +669,23 @@ body {
 }
 
 /* Add at the end of the file, after existing animations */
-
 @keyframes addKeyword {
     0% {
-        position: relative;
         transform: scale(1);
     }
     50% {
-        position: relative;
         transform: scale(1.1);
     }
     100% {
-        position: relative;
         transform: scale(1);
     }
 }
 
-.keyword-item.adding {
+.keyword-item.added {
     position: relative;
 }
 
-.keyword-item.adding::after {
+.keyword-item.added::after {
     content: '+';
     position: absolute;
     top: -10px;
@@ -703,6 +699,6 @@ body {
     align-items: center;
     justify-content: center;
     font-weight: bold;
-    animation: addKeyword 0.5s ease-out;
     box-shadow: var(--shadow-sm);
+    animation: addKeyword 0.5s ease-out;
 }
