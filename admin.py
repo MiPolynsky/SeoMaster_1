@@ -55,7 +55,7 @@ class IndustryPageView(SecureModelView):
     # Add help text for the SEO text field
     form_args = {
         'seo_text': {
-            'description': 'Поддерживает HTML-разметку. Используйте теги для форматирования текста.'
+            'description': 'HTML-разметка поддерживается. Используйте H2 и H3 для заголовков, <p> для параграфов. Пример:\n<h2>Основные преимущества</h2>\n<p>Текст о преимуществах...</p>'
         }
     }
 
@@ -66,7 +66,7 @@ class IndustryPageView(SecureModelView):
         form_class.title = StringField('Title', validators=[DataRequired()])
         form_class.description = TextAreaField('Description', validators=[DataRequired()])
         form_class.h1 = StringField('H1', validators=[DataRequired()])
-        form_class.seo_text = TextAreaField('SEO текст')
+        form_class.seo_text = TextAreaField('SEO текст (с поддержкой HTML)')
         form_class.icon = StringField('Иконка FontAwesome', validators=[DataRequired()])
         return form_class
 
