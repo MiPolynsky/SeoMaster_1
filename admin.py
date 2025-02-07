@@ -36,6 +36,30 @@ class PageMetadataView(SecureModelView):
             model.created_at = db.func.now()
         model.updated_at = db.func.now()
 
+class FeedbackModelView(SecureModelView):
+    column_list = ['name', 'website_url', 'phone', 'status', 'created_at']
+    column_searchable_list = ['name', 'website_url', 'phone', 'message']
+    column_filters = ['status', 'created_at']
+    form_excluded_columns = ['created_at']
+
+    create_modal = True
+    edit_modal = True
+
+    def scaffold_form(self):
+        form_class = super(FeedbackModelView, self).scaffold_form()
+        form_class.name = StringField('Имя', validators=[DataRequired()])
+        form_class.website_url = StringField('Адрес сайта', validators=[DataRequired()])
+        form_class.phone = StringField('Номер телефона', validators=[DataRequired()])
+        form_class.message = TextAreaField('Сообщение', validators=[DataRequired()])
+        form_class.status = SelectField('Статус', 
+                                    choices=[('new', 'Новое'), 
+                                           ('read', 'Прочитано'), 
+                                           ('responded', 'Отвечено')],
+                                    validators=[DataRequired()])
+        return form_class
+
+    column_default_sort = ('created_at', True)
+
 class IndustryPageView(SecureModelView):
     column_list = ['industry_code', 'name', 'title', 'h1', 'updated_at']
     column_searchable_list = ['industry_code', 'name', 'title']
@@ -44,7 +68,6 @@ class IndustryPageView(SecureModelView):
     create_modal = True
     edit_modal = True
 
-    # Configure which fields should use a larger input area
     form_widget_args = {
         'seo_text': {
             'rows': 15,
@@ -52,7 +75,6 @@ class IndustryPageView(SecureModelView):
         }
     }
 
-    # Add help text for the SEO text field
     form_args = {
         'seo_text': {
             'description': 'HTML-разметка поддерживается. Используйте H2 и H3 для заголовков, <p> для параграфов. Пример:\n<h2>Основные преимущества</h2>\n<p>Текст о преимуществах...</p>'
@@ -69,30 +91,6 @@ class IndustryPageView(SecureModelView):
         form_class.seo_text = TextAreaField('SEO текст (с поддержкой HTML)')
         form_class.icon = StringField('Иконка FontAwesome', validators=[DataRequired()])
         return form_class
-
-class FeedbackModelView(SecureModelView):
-    column_list = ['name', 'email', 'phone', 'status', 'created_at']
-    column_searchable_list = ['name', 'email', 'phone', 'message']
-    column_filters = ['status', 'created_at']
-    form_excluded_columns = ['created_at']
-
-    create_modal = True
-    edit_modal = True
-
-    def scaffold_form(self):
-        form_class = super(FeedbackModelView, self).scaffold_form()
-        form_class.name = StringField('Имя', validators=[DataRequired()])
-        form_class.email = StringField('Email', validators=[DataRequired()])
-        form_class.phone = StringField('Номер телефона', validators=[DataRequired()])
-        form_class.message = TextAreaField('Сообщение', validators=[DataRequired()])
-        form_class.status = SelectField('Статус', 
-                                   choices=[('new', 'Новое'), 
-                                          ('read', 'Прочитано'), 
-                                          ('responded', 'Отвечено')],
-                                   validators=[DataRequired()])
-        return form_class
-
-    column_default_sort = ('created_at', True)
 
 class SecureAdminIndexView(AdminIndexView):
     def is_accessible(self):

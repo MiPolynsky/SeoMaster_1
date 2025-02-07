@@ -367,17 +367,17 @@ def contact():
     metadata = PageMetadata.query.filter_by(url_path='/contact').first()
     if request.method == 'POST':
         name = request.form.get('name')
-        email = request.form.get('email')
+        website_url = request.form.get('website_url')
         phone = request.form.get('phone')
         message = request.form.get('message')
 
-        if not all([name, email, phone, message]):
+        if not all([name, website_url, phone, message]):
             flash('Пожалуйста, заполните все поля формы', 'error')
             return redirect(url_for('contact'))
 
         feedback = Feedback(
             name=name,
-            email=email,
+            website_url=website_url,
             phone=phone,
             message=message
         )
