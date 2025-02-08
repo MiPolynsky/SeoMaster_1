@@ -429,7 +429,8 @@ def sitemap():
     root = ET.Element('urlset')
     root.set('xmlns', 'http://www.sitemaps.org/schemas/sitemap/0.9')
 
-    urls = [
+    # Основные страницы
+    base_urls = [
         '/',
         '/services',
         '/contact',
@@ -441,7 +442,8 @@ def sitemap():
         '/service/landing'
     ]
 
-    for url in urls:
+    # Добавляем основные URL
+    for url in base_urls:
         url_elem = ET.SubElement(root, 'url')
         loc = ET.SubElement(url_elem, 'loc')
         full_url = 'https://good-seo.online' + url
@@ -456,9 +458,24 @@ def sitemap():
         priority = ET.SubElement(url_elem, 'priority')
         priority.text = '1.0' if url == '/' else '0.8'
 
-    tree = ET.ElementTree(root)
-    xml_str = ET.tostring(root, encoding='unicode', method='xml')
+    # Добавляем страницы отраслей
+    industries = IndustryPage.query.all()
+    for industry in industries:
+        url_elem = ET.SubElement(root, 'url')
+        loc = ET.SubElement(url_elem, 'loc')
+        full_url = f'https://good-seo.online/industry/{industry.industry_code}'
+        loc.text = full_url
 
+        lastmod = ET.SubElement(url_elem, 'lastmod')
+        lastmod.text = datetime.now().strftime('%Y-%m-%d')
+
+        changefreq = ET.SubElement(url_elem, 'changefreq')
+        changefreq.text = 'weekly'
+
+        priority = ET.SubElement(url_elem, 'priority')
+        priority.text = '0.8'
+
+    xml_str = ET.tostring(root, encoding='unicode', method='xml')
     return Response(xml_str, mimetype='application/xml')
 
 @app.route('/industry/<industry_code>')
